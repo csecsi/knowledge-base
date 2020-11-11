@@ -1,0 +1,30 @@
+create PV: pvcreate /dev/sda
+
+resize pv: pvresize /dev/sdb1
+
+create or extend VG: vgcreate data /dev/sdc or vgextend servername /dev/sdc1
+
+create LV using all the space: lvcreate -n db -l 100%FREE data
+
+create LV: lvcreate -L 13T -n name volume_group
+
+create thin LV: lvcreate -L 13T -T -n name volume_group
+
+detailed PV info: pvs -o+pv_used
+
+remove PV from VG: vgreduce servername /dev/sdc1
+
+remove PV: pvremove /dev/sdc1
+
+extend VG: vgextend datavg /dev/vdc
+
+Extend the LV and filesystem: the quick and automatic way: lvresize --resizefs --size +931GB /dev/vg/lv_home or lvresize --resizefs -l 100%FREE /dev/data/db
+
+striped LVM:
+
+vgcreate stripe0 /dev/sdc /dev/sdd
+lvcreate -l 100%FREE -i2 -I1024 -n volume0 stripe0
+lvdisplay --maps /dev/stripe_54/stripe_54
+
+Remove all LVM metadata: pvremove -ffy /dev/sda* 
+
